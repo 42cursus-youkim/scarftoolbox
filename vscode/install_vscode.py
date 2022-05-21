@@ -11,8 +11,9 @@ HOME = environ["HOME"]
 PATH = environ["PATH"].split(":")
 GOINFRE = Path(f"/{HOME}/goinfre")
 
-
-VSCODE_URL = "https://code.visualstudio.com/sha/download?build=stable&os=darwin-universal"
+VSCODE_BUILD='stable'
+VSCODE_PLATFORM='darwin-universal'
+VSCODE_URL = f"https://code.visualstudio.com/sha/download?build={VSCODE_BUILD}&os={VSCODE_PLATFORM}"
 VSCODE_NAME = "Visual Studio Code.app"
 
 CODE_DIR = GOINFRE / "vscode"
@@ -93,4 +94,4 @@ if __name__ == "__main__":
         print("Done. Saving as zip...")
         save_binary_as_zip(vscode, CODE_ZIP_DIR)
     print("Done. Unzipping...")
-    unzip_vscode(CODE_ZIP_DIR, CODE_APP_DIR)
+    unzip_vscode(CODE_ZIP_DIR)
