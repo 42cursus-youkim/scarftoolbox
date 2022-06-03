@@ -8,8 +8,6 @@ python3 symlink_cache.py
 configure NAMES for whatever you feel belongs in goinfre.
 """
 
-from __future__ import annotations
-
 import shutil
 from os import environ, system
 from pathlib import Path
@@ -104,6 +102,3 @@ def main():
     for f in caches(NAMES):
         move_dir_to_goinfre(f)
 
-
-if __name__ == "__main__":
-    main()

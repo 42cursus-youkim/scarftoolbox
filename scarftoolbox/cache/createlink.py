@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 from pathlib import Path
-from os import system
 from sys import argv
 
-HOME = Path("/Users/youkim")
+from ..config import *
+
 CACHE_DIR = HOME / "goinfre" / "Cache"
 
 if len(argv) != 2:

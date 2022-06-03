@@ -7,12 +7,10 @@ from subprocess import run
 
 import requests
 
-HOME = environ["HOME"]
-PATH = environ["PATH"].split(":")
-GOINFRE = Path(f"/{HOME}/goinfre")
+from ..config import *
 
-VSCODE_BUILD='stable'
-VSCODE_PLATFORM='darwin-universal'
+VSCODE_BUILD = "stable"
+VSCODE_PLATFORM = "darwin-universal"
 VSCODE_URL = f"https://code.visualstudio.com/sha/download?build={VSCODE_BUILD}&os={VSCODE_PLATFORM}"
 VSCODE_NAME = "Visual Studio Code.app"
 
@@ -20,7 +18,7 @@ CODE_DIR = GOINFRE / "vscode"
 CODE_ZIP_DIR = (CODE_DIR / "vscode").with_suffix(".zip")
 CODE_APP_DIR = CODE_DIR / VSCODE_NAME
 CODE_BIN = CODE_APP_DIR / "Contents/Resources/app/bin"
-CODE_DESKTOP = Path(f"{HOME}/Desktop") / VSCODE_NAME
+CODE_DESKTOP = HOME / "Desktop" / VSCODE_NAME
 
 
 def fetch_vscode_binary() -> bytes:
@@ -81,9 +79,7 @@ def symlink_to_desktop() -> None:
         print("could not create symlink to desktop, maybe it exists?")
 
 
-# unzip_vscode(fetch_vscode())
-
-if __name__ == "__main__":
+def main():
     mkdir_dependencies()
     if CODE_APP_DIR.exists():
         exit(0)
