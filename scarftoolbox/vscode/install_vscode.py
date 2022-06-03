@@ -14,10 +14,10 @@ VSCODE_PLATFORM = "darwin-universal"
 VSCODE_URL = f"https://code.visualstudio.com/sha/download?build={VSCODE_BUILD}&os={VSCODE_PLATFORM}"
 VSCODE_NAME = "Visual Studio Code.app"
 
-CODE_DIR = GOINFRE / "vscode"
-CODE_ZIP_DIR = (CODE_DIR / "vscode").with_suffix(".zip")
-CODE_APP_DIR = CODE_DIR / VSCODE_NAME
-CODE_BIN = CODE_APP_DIR / "Contents/Resources/app/bin"
+CODE_PATH = GOINFRE / "vscode"
+CODE_ZIP_PATH = (CODE_PATH / "vscode").with_suffix(".zip")
+CODE_APP_PATH = CODE_PATH / VSCODE_NAME
+CODE_BIN = CODE_APP_PATH / "Contents/Resources/app/bin"
 CODE_DESKTOP = HOME / "Desktop" / VSCODE_NAME
 
 
@@ -32,6 +32,7 @@ def save_binary_as_zip(binary: bytes, path: Path) -> None:
     path.write_bytes(binary)
 
 
+# TODO: create generic unzip function
 def unzip_vscode(path: Path) -> None:
     chdir(path.parent)
     print(f"cwd: {getcwd()}")
@@ -73,7 +74,7 @@ def check_code_at_path() -> None:
 
 def symlink_to_desktop() -> None:
     try:
-        CODE_DESKTOP.symlink_to(CODE_APP_DIR)
+        CODE_DESKTOP.symlink_to(CODE_APP_PATH)
         print("print added symlink to desktop")
     except:
         print("could not create symlink to desktop, maybe it exists?")
@@ -81,13 +82,13 @@ def symlink_to_desktop() -> None:
 
 def main():
     mkdir_dependencies()
-    if CODE_APP_DIR.exists():
+    if CODE_APP_PATH.exists():
         exit(0)
-    if not CODE_ZIP_DIR.exists():
-        CODE_DIR.mkdir(parents=True, exist_ok=True)
+    if not CODE_ZIP_PATH.exists():
+        CODE_PATH.mkdir(parents=True, exist_ok=True)
         print("Fetching vscode...")
         vscode = fetch_vscode_binary()
         print("Done. Saving as zip...")
-        save_binary_as_zip(vscode, CODE_ZIP_DIR)
+        save_binary_as_zip(vscode, CODE_ZIP_PATH)
     print("Done. Unzipping...")
-    unzip_vscode(CODE_ZIP_DIR)
+    unzip_vscode(CODE_ZIP_PATH)
