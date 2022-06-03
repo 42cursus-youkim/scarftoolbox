@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 
-from pathlib import Path
+from os import environ
+
+HOME = environ["HOME"]
+
 from os import system
+from pathlib import Path
 
 paths = [
-    Path("/Users/youkim/.vscode/extensions"),
-    Path("/Users/youkim/Library/Application Support/Code/CachedData"),
+    Path(f"{HOME}/.vscode/extensions"),
+    Path(f"{HOME}/Library/Application Support/Code/CachedData"),
 ]
 
 
