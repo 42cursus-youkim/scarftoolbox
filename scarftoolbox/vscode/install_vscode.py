@@ -83,6 +83,7 @@ def symlink_to_desktop() -> None:
 def main():
     mkdir_dependencies()
     if CODE_APP_PATH.exists():
+        print(f"{CODE_APP_PATH} exists")
         exit(0)
     if not CODE_ZIP_PATH.exists():
         CODE_PATH.mkdir(parents=True, exist_ok=True)

@@ -19,7 +19,9 @@ def main():
             symlink_cache.main()
         elif command == "brew":
             install_brew.main()
-
+        else:
+            print(f"Unknown command: {command}")
+            exit(1)
 
 if __name__ == "__main__":
     main()
