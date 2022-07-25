@@ -26,12 +26,15 @@ Configurations
 """
 NAMES: CacheDirs = {
     HOME / "Library": ["Mail"],  # Evaluates to /Users/<user>/Library/Mail
+    HOME: [".asdf", ".npm"],
     HOME
     / "Library"
     / "Caches": [
         "com.google.SoftwareUpdate",
         "vscode-cpptools/ipch",
         "Google/Chrome/Profile 5",
+        "pip",
+        "node-gyp",
         "Homebrew",
     ],
     # Evaluates to...
@@ -58,7 +61,7 @@ NAMES: CacheDirs = {
     app_support
     / "Google"
     / "Chrome"
-    / "Profile 5": ["Service Worker/CacheStorage"],
+    / "Profile 5": ["Service Worker/CacheStorage", "IndexedDB"],
     HOME / ".vscode": ["extensions"],
 }
 
@@ -78,27 +81,30 @@ def to_goinfre(path: Path) -> Path:
 
 def move_dir_to_goinfre(file: Path) -> None:
     def move_recursively(link: Path, goinfre: Path) -> None:
+        goinfre.mkdir(parents=True, exist_ok=True)
         shutil.copytree(link, goinfre, dirs_exist_ok=True)
         shutil.rmtree(link)
-        print(f"{link} -> {goinfre}", end=" ")
 
     link, goinfre = Path(file), to_goinfre(file)
-    if not goinfre.is_dir():
-        goinfre.unlink()
-        goinfre.mkdir(parents=True)
+    
+    if goinfre.exists():
+        if goinfre.is_dir():
+            return
+        else:
+            goinfre.unlink()
+    goinfre.mkdir(parents=True)
     if link.is_symlink():
         return
     if link.is_file():
         link.unlink()
     if link.is_dir():  # Move them
+        print(f"MOVE  {link}")
         move_recursively(link, goinfre)
     if not link.exists():
-        print(f"created link", end="")
+        print(f"LINK {goinfre}")
         link.symlink_to(goinfre)
-    print()
 
 
 def main():
     for f in caches(NAMES):
         move_dir_to_goinfre(f)
-
