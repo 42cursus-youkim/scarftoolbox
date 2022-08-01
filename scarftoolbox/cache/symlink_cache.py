@@ -25,7 +25,7 @@ goinfre = HOME / "goinfre" / "Cache"
 Configurations
 """
 NAMES: CacheDirs = {
-    HOME / "Library": ["Mail"],  # Evaluates to /Users/<user>/Library/Mail
+    HOME / "Library": ["Mail", "pnpm"],  # Evaluates to /Users/<user>/Library/Mail
     HOME: [".asdf", ".npm"],
     HOME
     / "Library"
@@ -86,7 +86,7 @@ def move_dir_to_goinfre(file: Path) -> None:
         shutil.rmtree(link)
 
     link, goinfre = Path(file), to_goinfre(file)
-    
+
     if goinfre.exists():
         if goinfre.is_dir():
             return
@@ -98,7 +98,7 @@ def move_dir_to_goinfre(file: Path) -> None:
     if link.is_file():
         link.unlink()
     if link.is_dir():  # Move them
-        print(f"MOVE  {link}")
+        print(f"MOVE {link}")
         move_recursively(link, goinfre)
     if not link.exists():
         print(f"LINK {goinfre}")
